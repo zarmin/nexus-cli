@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"sort"
 	"strconv"
 	"strings"
@@ -25,7 +24,7 @@ type strSorter struct {
 	cmp  func(str1, str2 string) bool
 }
 
-func extractNumberFromString(str string) (num int) {
+func extractNumberFromString(str string) (num int64) {
 	strSlice := make([]string, 0)
 	for _, v := range str {
 		if unicode.IsDigit(v) {
@@ -39,9 +38,9 @@ func extractNumberFromString(str string) (num int) {
 		return 1 << 32
 	}
 
-	num, err := strconv.Atoi(strings.Join(strSlice, ""))
+	num, err := strconv.ParseInt(strings.Join(strSlice, ""), 10, 64)
 	if err != nil {
-		log.Fatal(err)
+    num = 0
 	}
 	return num
 }
