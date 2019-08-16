@@ -88,9 +88,9 @@ func main() {
 						cli.StringFlag{
 							Name: "keep, k",
 						},
-            cli.BoolFlag{
-              Name: "dry-run, d",
-            },
+						cli.BoolFlag{
+							Name: "dry-run, d",
+						},
 					},
 					Action: func(c *cli.Context) error {
 						return deleteImage(c)
@@ -226,7 +226,7 @@ func deleteImage(c *cli.Context) error {
 	var imgName = c.String("name")
 	var tag = c.String("tag")
 	var keep = c.Int("keep")
-  var dryRun = c.Bool("dry-run")
+	var dryRun = c.Bool("dry-run")
 	if imgName == "" {
 		fmt.Fprintf(c.App.Writer, "You should specify the image name\n")
 		cli.ShowSubcommandHelp(c)
@@ -250,26 +250,26 @@ func deleteImage(c *cli.Context) error {
 				}
 				if len(tags) >= keep {
 					for _, tag := range tags[:len(tags)-keep] {
-            if dryRun {
-						  fmt.Printf("%s:%s image will be deleted (dry-run) ...\n", imgName, tag)
-            } else {
-						  fmt.Printf("%s:%s image will be deleted ...\n", imgName, tag)
-						  r.DeleteImageByTag(imgName, tag)
-            }
+						if dryRun {
+							fmt.Printf("%s:%s image will be deleted (dry-run) ...\n", imgName, tag)
+						} else {
+							fmt.Printf("%s:%s image will be deleted ...\n", imgName, tag)
+							r.DeleteImageByTag(imgName, tag)
+						}
 					}
 				} else {
 					fmt.Printf("Only %d images are available\n", len(tags))
 				}
 			}
 		} else {
-      if dryRun {
-        fmt.Printf("%s:%s image will be deleted (dry-run) ... \n", imgName, tag)
-      } else {
-  			err = r.DeleteImageByTag(imgName, tag)
-	  		if err != nil {
-		  		return cli.NewExitError(err.Error(), 1)
-			  }
-      }
+			if dryRun {
+				fmt.Printf("%s:%s image will be deleted (dry-run) ... \n", imgName, tag)
+			} else {
+				err = r.DeleteImageByTag(imgName, tag)
+				if err != nil {
+					return cli.NewExitError(err.Error(), 1)
+				}
+			}
 		}
 	}
 	return nil
