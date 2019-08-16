@@ -40,7 +40,7 @@ func extractNumberFromString(str string) (num int64) {
 
 	num, err := strconv.ParseInt(strings.Join(strSlice, ""), 10, 64)
 	if err != nil {
-    num = 0
+		num = 0
 	}
 	return num
 }
